@@ -66,7 +66,7 @@ Opens on `http://localhost:5173` with a proxy to the backend API.
 - [x] JShell-based code execution with timeout protection
 - [x] Challenge system with test validation
 - [x] Seed data for Stack, Queue, HashMap, LinkedList challenges
-- [ ] Queue visualizer
+- [x] Queue visualizer with enqueue/dequeue/peek animations
 - [ ] HashMap visualizer (bucket diagram)
 - [ ] LinkedList visualizer (node-and-pointer)
 - [ ] User progress tracking
