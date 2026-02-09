@@ -1,0 +1,2 @@
+# Auto-merge package-lock.json by accepting the current version and regenerating
+frontend/package-lock.json merge=ours

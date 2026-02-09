@@ -39,6 +39,26 @@ npm run dev
 
 Opens on `http://localhost:5173` with a proxy to the backend API.
 
+## Troubleshooting
+
+### Merge Conflicts with package-lock.json
+
+If you encounter merge conflicts in `package-lock.json`:
+
+```bash
+# Regenerate the lock file (safest approach)
+cd frontend
+rm package-lock.json
+npm install
+cd ..
+
+# Mark as resolved
+git add frontend/package-lock.json
+git commit -m "Resolve merge conflict: regenerate package-lock.json"
+```
+
+To prevent future conflicts, `package-lock.json` should never be manually edited. Always run `npm install` to update it.
+
 ## API Endpoints
 
 | Method | Endpoint                | Description                    |
@@ -75,4 +95,4 @@ Opens on `http://localhost:5173` with a proxy to the backend API.
 ## Tech Stack
 
 **Backend:** Spring Boot 3.2, JPA + SQLite, JShell API  
-**Frontend:** React 18, Vite, Tailwind CSS, Monaco Editor, Framer Motion  
+**Frontend:** React 18, Vite, Tailwind CSS, Monaco Editor, Framer Motion
