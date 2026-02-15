@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import ADTSelector from '../components/ADTSelector/ADTSelector';
+import ADTReferencePanel from '../components/ADTReferencePanel/ADTReferencePanel';
 
 export default function HomePage() {
+  const [referenceType, setReferenceType] = useState(null);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
@@ -12,7 +16,12 @@ export default function HomePage() {
           Write real Java code and see it execute in your browser.
         </p>
       </div>
-      <ADTSelector />
+      <ADTSelector onInfoClick={(type) => setReferenceType(type)} />
+      <ADTReferencePanel
+        adtType={referenceType}
+        isOpen={referenceType !== null}
+        onClose={() => setReferenceType(null)}
+      />
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BookOpen } from 'lucide-react';
 import Visualizer from '../components/Visualizer/Visualizer';
 import ChallengePanel from '../components/ChallengePanel/ChallengePanel';
+import ADTReferencePanel from '../components/ADTReferencePanel/ADTReferencePanel';
 import { fetchChallenges } from '../utils/api';
 import adtData from '../data/adtData';
 
@@ -12,6 +13,7 @@ export default function PracticePage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [referenceOpen, setReferenceOpen] = useState(false);
 
   const adtInfo = adtData.find((a) => a.type === adtType);
 
@@ -43,6 +45,13 @@ export default function PracticePage() {
         <h2 className="text-2xl font-bold text-surface-100">
           {adtInfo?.name || adtType}
         </h2>
+        <button
+          onClick={() => setReferenceOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-surface-300 bg-surface-800 border border-surface-700 hover:border-primary-500/50 hover:text-primary-400 transition-colors"
+        >
+          <BookOpen className="w-4 h-4" />
+          Reference
+        </button>
       </div>
 
       {/* Challenge tabs */}
@@ -79,6 +88,13 @@ export default function PracticePage() {
           <ChallengePanel key={activeChallenge?.id} challenge={activeChallenge} />
         </div>
       )}
+
+      {/* Reference Panel */}
+      <ADTReferencePanel
+        adtType={adtType}
+        isOpen={referenceOpen}
+        onClose={() => setReferenceOpen(false)}
+      />
     </div>
   );
 }
