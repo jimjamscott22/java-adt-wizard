@@ -16,7 +16,7 @@ adt-practice/
 ## Quick Start
 
 ### Prerequisites
-- **Java 21** (JShell API requires JDK 9+, project targets 21)
+- **Java 17+** (JShell API requires JDK 9+, project targets 17)
 - **Maven 3.9+**
 - **Node.js 18+** and npm
 
