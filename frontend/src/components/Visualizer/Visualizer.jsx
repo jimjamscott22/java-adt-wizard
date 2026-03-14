@@ -1,10 +1,12 @@
 import StackVisualizer from './StackVisualizer';
 import QueueVisualizer from './QueueVisualizer';
+import HashMapVisualizer from './HashMapVisualizer';
 import { Construction } from 'lucide-react';
 
 const visualizerMap = {
   STACK: StackVisualizer,
   QUEUE: QueueVisualizer,
+  HASHMAP: HashMapVisualizer,
 };
 
 function ComingSoon({ adtType }) {

@@ -87,7 +87,7 @@ To prevent future conflicts, `package-lock.json` should never be manually edited
 - [x] Challenge system with test validation
 - [x] Seed data for Stack, Queue, HashMap, LinkedList challenges
 - [x] Queue visualizer with enqueue/dequeue/peek animations
-- [ ] HashMap visualizer (bucket diagram)
+- [x] HashMap visualizer (bucket diagram)
 - [ ] LinkedList visualizer (node-and-pointer)
 - [ ] User progress tracking
 - [ ] Timed drill mode
