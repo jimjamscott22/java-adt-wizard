@@ -43,3 +43,4 @@ adt_practice.db
 # ===== Logs =====
 *.log
 logs/
+backend/pom.xml
