@@ -1,12 +1,18 @@
 import StackVisualizer from './StackVisualizer';
 import QueueVisualizer from './QueueVisualizer';
 import HashMapVisualizer from './HashMapVisualizer';
+import LinkedListVisualizer from './LinkedListVisualizer';
+import TreeMapVisualizer from './TreeMapVisualizer';
+import PriorityQueueVisualizer from './PriorityQueueVisualizer';
 import { Construction } from 'lucide-react';
 
 const visualizerMap = {
   STACK: StackVisualizer,
   QUEUE: QueueVisualizer,
   HASHMAP: HashMapVisualizer,
+  LINKEDLIST: LinkedListVisualizer,
+  TREEMAP: TreeMapVisualizer,
+  PRIORITYQUEUE: PriorityQueueVisualizer,
 };
 
 function ComingSoon({ adtType }) {
