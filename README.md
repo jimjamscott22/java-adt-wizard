@@ -26,6 +26,12 @@ adt-practice/
 cd backend
 mvn spring-boot:run
 ```
+### Backend on Raspberry Pis
+
+```
+cd backend
+mvn spring-boot:run -Djava.version=17
+```
 
 The API starts on `http://localhost:8080`. On first run, it seeds the SQLite database with sample challenges.
 
