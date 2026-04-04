@@ -1,11 +1,11 @@
 import Editor from '@monaco-editor/react';
 
-export default function CodeEditor({ value, onChange, height = '400px' }) {
+export default function CodeEditor({ value, onChange, language = 'java', height = '400px' }) {
   return (
     <div className="rounded-lg overflow-hidden border border-surface-700">
       <Editor
         height={height}
-        defaultLanguage="java"
+        language={language}
         theme="vs-dark"
         value={value}
         onChange={onChange}
@@ -17,7 +17,7 @@ export default function CodeEditor({ value, onChange, height = '400px' }) {
           padding: { top: 16 },
           lineNumbers: 'on',
           renderLineHighlight: 'line',
-          tabSize: 4,
+          tabSize: language === 'python' ? 4 : 4,
           automaticLayout: true,
         }}
       />

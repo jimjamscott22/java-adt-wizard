@@ -1,13 +1,22 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BookOpen, Clock, Lightbulb } from 'lucide-react';
-import adtData from '../../data/adtData';
+import javaAdtData from '../../data/javaAdtData';
+import pythonAdtData from '../../data/pythonAdtData';
 
-export default function ADTReferencePanel({ adtType, isOpen, onClose }) {
+const dataByLang = {
+  java: javaAdtData,
+  python: pythonAdtData,
+};
+
+export default function ADTReferencePanel({ lang = 'java', adtType, isOpen, onClose }) {
+  const adtData = dataByLang[lang] || javaAdtData;
   const adt = adtData.find((a) => a.type === adtType);
 
   if (!adt) return null;
 
   const Icon = adt.icon;
+  const exampleCode = adt.javaExample || adt.pythonExample || '';
+  const exampleLabel = lang === 'python' ? 'Python Example' : 'Java Example';
 
   return (
     <AnimatePresence>
@@ -89,15 +98,15 @@ export default function ADTReferencePanel({ adtType, isOpen, onClose }) {
                 </div>
               </div>
 
-              {/* Java Example */}
+              {/* Code Example */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <Clock className="w-4 h-4 text-emerald-400" />
-                  <h4 className="text-sm font-semibold text-surface-200">Java Example</h4>
+                  <h4 className="text-sm font-semibold text-surface-200">{exampleLabel}</h4>
                 </div>
                 <div className="bg-surface-950 border border-surface-700 rounded-lg p-4 overflow-x-auto">
                   <pre className="text-sm font-mono text-surface-300 leading-relaxed whitespace-pre">
-                    {adt.javaExample}
+                    {exampleCode}
                   </pre>
                 </div>
               </div>
