@@ -53,7 +53,7 @@ frontend/                        React 18 + Vite + Tailwind CSS
 
 - **Visualizer routing:** `Visualizer.jsx` maps ADT type strings (e.g., `STACK`, `QUEUE`, `HASHMAP`) to visualizer components. Unregistered types show a "Coming Soon" placeholder.
 - **Adding a new visualizer:** Create `<Name>Visualizer.jsx` in `components/Visualizer/`, add it to the `visualizerMap` in `Visualizer.jsx`.
-- **ADT data:** All ADT metadata (icons, operations, examples) lives in `frontend/src/data/adtData.js`.
+- **ADT data:** All ADT metadata (icons, operations, examples) lives in `frontend/src/data/javaAdtData.js` (Java) and `frontend/src/data/pythonAdtData.js` (Python).
 - **Backend code execution:** `POST /api/execute` runs user Java code via JShell with a 5-second timeout.
 - **Database:** SQLite file (`adt_practice.db`) auto-created in `backend/` on first run. Schema managed by Hibernate `ddl-auto=update`.
 - **Seed data:** `DataSeeder.java` populates challenges on first boot if the DB is empty.
