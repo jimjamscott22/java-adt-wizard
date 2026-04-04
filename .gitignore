@@ -40,6 +40,9 @@ adt_practice.db
 *.db-wal
 *.db-shm
 
+# ===== Worktrees =====
+.worktrees/
+
 # ===== Logs =====
 *.log
 logs/
