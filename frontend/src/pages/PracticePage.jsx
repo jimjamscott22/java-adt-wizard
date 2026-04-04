@@ -5,19 +5,40 @@ import Visualizer from '../components/Visualizer/Visualizer';
 import ChallengePanel from '../components/ChallengePanel/ChallengePanel';
 import ADTReferencePanel from '../components/ADTReferencePanel/ADTReferencePanel';
 import { fetchChallenges } from '../utils/api';
-import adtData from '../data/javaAdtData';
+import javaAdtData from '../data/javaAdtData';
+import pythonAdtData from '../data/pythonAdtData';
+
+const dataByLang = {
+  java: javaAdtData,
+  python: pythonAdtData,
+};
 
 export default function PracticePage() {
-  const { adtType } = useParams();
+  const { adtType, lang } = useParams();
   const [challenges, setChallenges] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [referenceOpen, setReferenceOpen] = useState(false);
 
+  const adtData = dataByLang[lang] || javaAdtData;
   const adtInfo = adtData.find((a) => a.type === adtType);
 
   useEffect(() => {
+    if (lang === 'python') {
+      // Python track: no backend challenges yet, show free-code editor
+      setChallenges([{
+        id: `python-${adtType}`,
+        title: 'Free Code',
+        description: `Write Python code to practice using ${adtInfo?.name || adtType}. Your code runs in the browser via Pyodide.`,
+        difficulty: 'EASY',
+        starterCode: adtInfo?.pythonExample || '# Write your code here\n',
+      }]);
+      setActiveIndex(0);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     fetchChallenges(adtType)
@@ -27,7 +48,7 @@ export default function PracticePage() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [adtType]);
+  }, [adtType, lang, adtInfo?.name, adtInfo?.pythonExample]);
 
   const activeChallenge = challenges[activeIndex] || null;
 
@@ -45,6 +66,9 @@ export default function PracticePage() {
         <h2 className="text-2xl font-bold text-surface-100">
           {adtInfo?.name || adtType}
         </h2>
+        <span className="text-xs font-medium px-2 py-1 rounded-md bg-surface-800 border border-surface-700 text-surface-300">
+          {lang === 'python' ? '🐍 Python' : '☕ Java'}
+        </span>
         <button
           onClick={() => setReferenceOpen(true)}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-surface-300 bg-surface-800 border border-surface-700 hover:border-primary-500/50 hover:text-primary-400 transition-colors"
@@ -55,7 +79,7 @@ export default function PracticePage() {
       </div>
 
       {/* Challenge tabs */}
-      {challenges.length > 0 && (
+      {challenges.length > 1 && (
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           {challenges.map((ch, i) => (
             <button
@@ -85,12 +109,13 @@ export default function PracticePage() {
       {!loading && !error && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Visualizer adtType={adtType} />
-          <ChallengePanel key={activeChallenge?.id} challenge={activeChallenge} />
+          <ChallengePanel key={activeChallenge?.id} challenge={activeChallenge} lang={lang} />
         </div>
       )}
 
       {/* Reference Panel */}
       <ADTReferencePanel
+        lang={lang}
         adtType={adtType}
         isOpen={referenceOpen}
         onClose={() => setReferenceOpen(false)}
