@@ -62,10 +62,16 @@ function Dropdown({ label, links, currentPath }) {
   );
 }
 
+function getActiveLang(pathname) {
+  const match = pathname.match(/^\/(java|python)\//);
+  return match ? match[1] : null;
+}
+
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
+  const activeLang = getActiveLang(currentPath);
 
   return (
     <nav className="bg-surface-900 border-b border-surface-700">
@@ -96,6 +102,11 @@ export default function Navbar() {
               links={learnLinks}
               currentPath={currentPath}
             />
+            {activeLang && (
+              <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-surface-800 border border-surface-700 text-surface-300">
+                {activeLang === 'python' ? '🐍 Python' : '☕ Java'}
+              </span>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -121,6 +132,13 @@ export default function Navbar() {
             >
               Practice
             </Link>
+            {activeLang && (
+              <div className="px-3 py-2">
+                <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-surface-800 border border-surface-700 text-surface-300">
+                  {activeLang === 'python' ? '🐍 Python' : '☕ Java'}
+                </span>
+              </div>
+            )}
             <div className="px-3 py-2 text-xs font-semibold text-surface-500 uppercase tracking-wider">
               Learn
             </div>
