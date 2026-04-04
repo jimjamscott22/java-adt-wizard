@@ -143,7 +143,7 @@ export default function ComplexityPage() {
                       ))}
                     </ul>
                   </div>
-                  <CodeBlock code={cls.javaExample} />
+                  <CodeBlock code={cls.javaExample} language="java" />
                 </div>
               </motion.div>
             );

@@ -138,7 +138,7 @@ export default function StrategiesPage() {
                 {tech.name}
               </h3>
               <p className="text-sm text-surface-400 mb-3">{tech.description}</p>
-              <CodeBlock code={tech.javaExample} />
+              <CodeBlock code={tech.javaExample} language="java" />
             </div>
           ))}
         </div>

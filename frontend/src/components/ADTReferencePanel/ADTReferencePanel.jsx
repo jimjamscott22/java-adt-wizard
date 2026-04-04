@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, BookOpen, Clock, Lightbulb } from 'lucide-react';
 import javaAdtData from '../../data/javaAdtData';
 import pythonAdtData from '../../data/pythonAdtData';
+import CodeBlock from '../Learn/CodeBlock';
 
 const dataByLang = {
   java: javaAdtData,
@@ -104,11 +105,7 @@ export default function ADTReferencePanel({ lang = 'java', adtType, isOpen, onCl
                   <Clock className="w-4 h-4 text-emerald-400" />
                   <h4 className="text-sm font-semibold text-surface-200">{exampleLabel}</h4>
                 </div>
-                <div className="bg-surface-950 border border-surface-700 rounded-lg p-4 overflow-x-auto">
-                  <pre className="text-sm font-mono text-surface-300 leading-relaxed whitespace-pre">
-                    {exampleCode}
-                  </pre>
-                </div>
+                <CodeBlock code={exampleCode} language={lang} />
               </div>
             </div>
           </motion.div>
