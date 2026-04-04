@@ -1,23 +1,36 @@
 import { useState } from 'react';
-import { Play, RotateCcw, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { Play, RotateCcw, CheckCircle2, XCircle, Clock, Loader2 } from 'lucide-react';
 import CodeEditor from '../CodeEditor/CodeEditor';
 import { executeCode } from '../../utils/api';
+import { executePython, isPyodideLoaded, loadPyodide } from '../../services/pyodideService';
 
-export default function ChallengePanel({ challenge }) {
+export default function ChallengePanel({ challenge, lang = 'java' }) {
   const [code, setCode] = useState(challenge?.starterCode || '');
   const [result, setResult] = useState(null);
   const [running, setRunning] = useState(false);
+  const [pyodideLoading, setPyodideLoading] = useState(false);
 
   const handleRun = async () => {
     setRunning(true);
     setResult(null);
     try {
-      const res = await executeCode(code, challenge?.id);
+      let res;
+      if (lang === 'python') {
+        if (!isPyodideLoaded()) {
+          setPyodideLoading(true);
+          await loadPyodide();
+          setPyodideLoading(false);
+        }
+        res = await executePython(code);
+      } else {
+        res = await executeCode(code, challenge?.id);
+      }
       setResult(res);
     } catch (err) {
       setResult({ success: false, output: '', error: err.message, allTestsPassed: false, executionTimeMs: 0 });
     } finally {
       setRunning(false);
+      setPyodideLoading(false);
     }
   };
 
@@ -52,7 +65,11 @@ export default function ChallengePanel({ challenge }) {
       </div>
 
       {/* Code editor */}
-      <CodeEditor value={code} onChange={(val) => setCode(val || '')} />
+      <CodeEditor
+        value={code}
+        onChange={(val) => setCode(val || '')}
+        language={lang === 'python' ? 'python' : 'java'}
+      />
 
       {/* Action buttons */}
       <div className="flex items-center gap-3">
@@ -61,8 +78,12 @@ export default function ChallengePanel({ challenge }) {
           disabled={running}
           className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
         >
-          <Play className="w-4 h-4" />
-          {running ? 'Running...' : 'Run Code'}
+          {running ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Play className="w-4 h-4" />
+          )}
+          {pyodideLoading ? 'Loading Python...' : running ? 'Running...' : 'Run Code'}
         </button>
         <button
           onClick={handleReset}
