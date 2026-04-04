@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
-import adtData from '../../data/adtData';
+import javaAdtData from '../../data/javaAdtData';
+import pythonAdtData from '../../data/pythonAdtData';
+
+const dataByLang = {
+  java: javaAdtData,
+  python: pythonAdtData,
+};
 
 const container = {
   hidden: { opacity: 0 },
@@ -16,9 +22,12 @@ const item = {
   show: { opacity: 1, y: 0 },
 };
 
-export default function ADTSelector({ onInfoClick }) {
+export default function ADTSelector({ lang = 'java', onInfoClick }) {
+  const adtData = dataByLang[lang] || javaAdtData;
+
   return (
     <motion.div
+      key={lang}
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
       variants={container}
       initial="hidden"
@@ -29,7 +38,7 @@ export default function ADTSelector({ onInfoClick }) {
         return (
           <motion.div key={adt.type} variants={item}>
             <Link
-              to={`/practice/${adt.type}`}
+              to={`/${lang}/practice/${adt.type}`}
               className="block group"
             >
               <div className="bg-surface-800 border border-surface-700 rounded-xl p-6 hover:border-primary-500/50 hover:bg-surface-800/80 transition-all duration-200">

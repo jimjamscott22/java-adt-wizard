@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Navbar from './components/Layout/Navbar';
 import HomePage from './pages/HomePage';
 import PracticePage from './pages/PracticePage';
@@ -8,6 +8,11 @@ import DataStructuresPage from './pages/DataStructuresPage';
 import ComplexityPage from './pages/ComplexityPage';
 import StrategiesPage from './pages/StrategiesPage';
 
+function PracticeRedirect() {
+  const { adtType } = useParams();
+  return <Navigate to={`/java/practice/${adtType}`} replace />;
+}
+
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -15,7 +20,8 @@ export default function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/practice/:adtType" element={<PracticePage />} />
+          <Route path="/:lang/practice/:adtType" element={<PracticePage />} />
+          <Route path="/practice/:adtType" element={<PracticeRedirect />} />
           <Route path="/learn/oop" element={<OOPPage />} />
           <Route path="/learn/algorithms" element={<AlgorithmsPage />} />
           <Route path="/learn/data-structures" element={<DataStructuresPage />} />
