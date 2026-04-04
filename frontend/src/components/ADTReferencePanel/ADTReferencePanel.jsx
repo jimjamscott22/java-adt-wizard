@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BookOpen, Clock, Lightbulb } from 'lucide-react';
-import adtData from '../../data/adtData';
+import adtData from '../../data/javaAdtData';
 
 export default function ADTReferencePanel({ adtType, isOpen, onClose }) {
   const adt = adtData.find((a) => a.type === adtType);

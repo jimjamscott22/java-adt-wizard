@@ -5,7 +5,7 @@ import Visualizer from '../components/Visualizer/Visualizer';
 import ChallengePanel from '../components/ChallengePanel/ChallengePanel';
 import ADTReferencePanel from '../components/ADTReferencePanel/ADTReferencePanel';
 import { fetchChallenges } from '../utils/api';
-import adtData from '../data/adtData';
+import adtData from '../data/javaAdtData';
 
 export default function PracticePage() {
   const { adtType } = useParams();

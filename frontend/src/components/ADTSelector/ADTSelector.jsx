@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
-import adtData from '../../data/adtData';
+import adtData from '../../data/javaAdtData';
 
 const container = {
   hidden: { opacity: 0 },
