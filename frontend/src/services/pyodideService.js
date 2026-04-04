@@ -10,26 +10,31 @@ export async function loadPyodide() {
   if (loadingPromise) return loadingPromise;
 
   loadingPromise = (async () => {
-    // Load Pyodide script from CDN
-    if (!window.loadPyodide) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js';
-      document.head.appendChild(script);
-      await new Promise((resolve, reject) => {
-        script.onload = resolve;
-        script.onerror = () => reject(new Error('Failed to load Pyodide'));
-      });
+    try {
+      // Load Pyodide script from CDN
+      if (!window.loadPyodide) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js';
+        document.head.appendChild(script);
+        await new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = () => reject(new Error('Failed to load Pyodide'));
+        });
+      }
+
+      const pyodide = await window.loadPyodide();
+
+      // Install sortedcontainers for SortedDict support
+      await pyodide.loadPackage('micropip');
+      const micropip = pyodide.pyimport('micropip');
+      await micropip.install('sortedcontainers');
+
+      pyodideInstance = pyodide;
+      return pyodide;
+    } catch (err) {
+      loadingPromise = null; // allow retry on failure
+      throw err;
     }
-
-    const pyodide = await window.loadPyodide();
-
-    // Install sortedcontainers for SortedDict support
-    await pyodide.loadPackage('micropip');
-    const micropip = pyodide.pyimport('micropip');
-    await micropip.install('sortedcontainers');
-
-    pyodideInstance = pyodide;
-    return pyodide;
   })();
 
   return loadingPromise;
