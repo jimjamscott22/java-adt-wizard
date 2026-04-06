@@ -42,4 +42,15 @@ public class ChallengeService {
         }
         return em.merge(challenge);
     }
+
+    public boolean existsByAdtTypeAndTitle(String adtType, String title) {
+        Long count = em.createQuery(
+                        "SELECT COUNT(c) FROM Challenge c WHERE c.adtType = :adtType AND c.title = :title",
+                        Long.class
+                )
+                .setParameter("adtType", adtType)
+                .setParameter("title", title)
+                .getSingleResult();
+        return count != null && count > 0;
+    }
 }
