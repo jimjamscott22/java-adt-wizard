@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { ArrowLeft, BookOpen, MessageSquare } from 'lucide-react';
 import Visualizer from '../components/Visualizer/Visualizer';
 import ChallengePanel from '../components/ChallengePanel/ChallengePanel';
 import ADTReferencePanel from '../components/ADTReferencePanel/ADTReferencePanel';
+import ChatPanel from '../components/ChatPanel/ChatPanel';
 import { fetchChallenges } from '../utils/api';
 import javaAdtData from '../data/javaAdtData';
 import pythonAdtData from '../data/pythonAdtData';
@@ -20,6 +21,7 @@ export default function PracticePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [referenceOpen, setReferenceOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const adtData = dataByLang[lang] || javaAdtData;
   const adtInfo = adtData.find((a) => a.type === adtType);
@@ -76,6 +78,13 @@ export default function PracticePage() {
           <BookOpen className="w-4 h-4" />
           Reference
         </button>
+        <button
+          onClick={() => setIsChatOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-surface-300 bg-surface-800 border border-surface-700 hover:border-primary-500/50 hover:text-primary-400 transition-colors"
+        >
+          <MessageSquare className="w-4 h-4" />
+          Chat
+        </button>
       </div>
 
       {/* Challenge tabs */}
@@ -119,6 +128,13 @@ export default function PracticePage() {
         adtType={adtType}
         isOpen={referenceOpen}
         onClose={() => setReferenceOpen(false)}
+      />
+
+      {/* Chat Panel */}
+      <ChatPanel
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        context={`Practicing ${adtType} in ${lang?.toUpperCase() ?? 'Java'}`}
       />
     </div>
   );
