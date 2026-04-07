@@ -1,18 +1,25 @@
 package com.adtpractice.service;
 
-import com.adtpractice.model.Challenge;
-import com.adtpractice.model.ExecutionDto.ExecuteRequest;
-import com.adtpractice.model.ExecutionDto.ExecuteResponse;
-import jdk.jshell.JShell;
-import jdk.jshell.SnippetEvent;
-import jdk.jshell.Snippet;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.adtpractice.model.Challenge;
+import com.adtpractice.model.ExecutionDto.ExecuteRequest;
+import com.adtpractice.model.ExecutionDto.ExecuteResponse;
+
+import jdk.jshell.JShell;
+import jdk.jshell.Snippet;
+import jdk.jshell.SnippetEvent;
+import jdk.jshell.SourceCodeAnalysis;
 
 @Service
 public class JShellExecutionService {
@@ -75,18 +82,28 @@ public class JShellExecutionService {
                 }
             }
 
-            // Execute the code
-            List<SnippetEvent> events = jshell.eval(code);
+            // Execute the code chunk by chunk
+            String remaining = code;
+            while (!remaining.trim().isBlank()) {
+                SourceCodeAnalysis.CompletionInfo info = jshell.sourceCodeAnalysis().analyzeCompletion(remaining);
 
-            for (SnippetEvent event : events) {
-                if (event.status() == Snippet.Status.REJECTED) {
-                    // Collect diagnostics
-                    jshell.diagnostics(event.snippet()).forEach(diag ->
-                            errors.append(diag.getMessage(null)).append("\n")
-                    );
-                }
-                if (event.exception() != null) {
-                    errors.append(event.exception().getMessage()).append("\n");
+                if (info.completeness().isComplete()) {
+                    List<SnippetEvent> events = jshell.eval(info.source());
+
+                    for (SnippetEvent event : events) {
+                        if (event.status() == Snippet.Status.REJECTED) {
+                            jshell.diagnostics(event.snippet()).forEach(diag ->
+                                    errors.append(diag.getMessage(null)).append("\n")
+                            );
+                        }
+                        if (event.exception() != null) {
+                            errors.append(event.exception().getMessage()).append("\n");
+                        }
+                    }
+                    remaining = info.remaining();
+                } else {
+                    errors.append("Incomplete code or syntax error near: ").append(remaining).append("\n");
+                    break;
                 }
             }
 
